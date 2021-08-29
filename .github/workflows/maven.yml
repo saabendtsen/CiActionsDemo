@@ -13,6 +13,15 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
+      - name: Setup on Latest MySQL
+      - uses: mirromutth/mysql-action@1.1
+          with:
+            host port: 3306
+            container port: 3306
+            mysql version: "latest"
+            mysql database: "startcode"
+            mysql user: "dev"
+            mysql password: "ax2"
       - name: Build with Maven
         run: mvn --batch-mode --update-snapshots verify
       - name: Maven deploy
