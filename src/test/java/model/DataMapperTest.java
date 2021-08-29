@@ -15,10 +15,13 @@ class DataMapperTest {
 
     @BeforeEach
     void setUp() {
+        DataMapper.createTable();
+        DataMapper.fillTable();
     }
 
     @AfterEach
     void tearDown() {
+        DataMapper.deleteTable();
     }
 
     @Test

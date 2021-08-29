@@ -57,13 +57,62 @@ public class DataMapper {
 
     public static void main(String[] args) {
         //createPerson(new Person("Hansen", 22));
-        Person personExpected = DataMapper.getAllPersons().get(0);
-        Random rnd = new Random();
-        DataMapper.editDetails(personExpected, rnd.nextInt(1000000));
+        deleteTable();
+       createTable();
+       fillTable();
+       deleteTable();
 
-        Person personActual = DataMapper.getAllPersons().get(0);
-        System.out.println(personExpected);
-        System.out.println(personActual);
+    }
+
+    public static void createTable(){
+        try{
+            Connection con = DBconnector.connection();
+
+            String SQL = "create table if not exists  startcode.usertable(\n" +
+                    "id int primary key auto_increment,\n" +
+                    "fname varchar(30),\n" +
+                    "lname varchar(30),\n" +
+                    "pw varchar(50),\n" +
+                    "phone varchar(11),\n" +
+                    "address varchar(50)\n" +
+                    ");\n";
+
+            PreparedStatement ps = con.prepareStatement(SQL);
+            ps.executeUpdate();
+
+        } catch(SQLException | ClassNotFoundException ex){
+            ex.printStackTrace();
+        }
+    }
+
+    public static void fillTable(){
+        try{
+            Connection con = DBconnector.connection();
+            String SQL = "INSERT INTO `usertable` VALUES " +
+                    "(1,'Henning','Dahl','sdfw333','+4540949403','Rolighedsvej 22, 2100 Kbh Ø')," +
+                    "(2,'Hannah','Dinesen','fsdkk653kk','+4540546754','Rolighedsvej 67, 2100 Kbh Ø')," +
+                    "(3,'Amin','Kotchic','lkjnnn443','+4540345469','Rolighedsvej 90, 2100 Kbh Ø')," +
+                    "(4,'Harun','Dupsmith','kothis55','+4540677667','Rolighedsvej 104, 2100 Kbh Ø');\n";;
+
+            PreparedStatement ps = con.prepareStatement(SQL);
+            ps.executeUpdate();
+
+
+        } catch(SQLException | ClassNotFoundException ex){
+            ex.printStackTrace();
+        }
+    }
+
+    public static void deleteTable(){
+        try{
+            Connection con = DBconnector.connection();
+            String SQL = "DROP TABLE IF EXISTS `usertable`;";
+            PreparedStatement ps = con.prepareStatement(SQL);
+            ps.executeUpdate();
+
+        } catch(SQLException | ClassNotFoundException ex){
+            ex.printStackTrace();
+        }
     }
 
     public static boolean isUnderAge(Person p) {
